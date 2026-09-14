@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { 
   ShieldCheck, 
@@ -91,7 +91,7 @@ export default function LeadIntakeForm({ initialValues, onSuccess, className = '
     handleSubmit,
     setValue,
     trigger,
-    watch,
+    control,
     reset,
     formState: { errors },
   } = useForm<ContactFormData>({
@@ -113,10 +113,10 @@ export default function LeadIntakeForm({ initialValues, onSuccess, className = '
     },
   });
 
-  const selectedTier = watch('assetTier');
-  const selectedObjective = watch('objective');
-  const selectedHorizon = watch('horizon');
-  const selectedMeeting = watch('preferredMeeting');
+  const selectedTier = useWatch({ control, name: 'assetTier' });
+  const selectedObjective = useWatch({ control, name: 'objective' });
+  const selectedHorizon = useWatch({ control, name: 'horizon' });
+  const selectedMeeting = useWatch({ control, name: 'preferredMeeting' });
 
   const goToNextStep = async () => {
     setSubmissionError(null);

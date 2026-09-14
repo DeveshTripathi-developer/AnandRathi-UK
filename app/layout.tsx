@@ -5,14 +5,20 @@ import FcaBanner from '@/components/FcaBanner';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+// Display / Headings (Serif): Playfair Display
+// H1 Hero Titles: Bold (700), H2–H4 Section Headings: Semi-Bold (600)
 const playfair = Playfair_Display({
   subsets: ['latin'],
+  weight: ['600', '700'],
   variable: '--font-serif',
   display: 'swap',
 });
 
+// Body & UI / Metrics (Sans-Serif): Plus Jakarta Sans
+// Body Copy: Regular (400), Navigation: Medium (500), Buttons/Badges: Semi-Bold (600), Metrics: Bold (700)
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
   display: 'swap',
 });
@@ -143,7 +149,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${plusJakarta.variable} scroll-smooth`}>
+    <html
+      lang="en"
+      className={`${playfair.variable} ${plusJakarta.variable} font-sans font-normal text-slate-900 bg-slate-50 antialiased scroll-smooth`}
+    >
       <head>
         {/* Structured Data (SEO) - FinancialService */}
         <script
@@ -161,7 +170,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col font-sans bg-[#FAF9F6] text-slate-900 selection:bg-amber-400 selection:text-slate-950" suppressHydrationWarning>
+      <body
+        className={`${playfair.variable} ${plusJakarta.variable} font-sans font-normal text-slate-900 bg-slate-50 antialiased min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-950`}
+        suppressHydrationWarning
+      >
         {/* Persistent, Accessible FCA Compliance Banner */}
         <FcaBanner />
 
