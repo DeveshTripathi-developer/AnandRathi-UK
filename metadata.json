@@ -1,0 +1,6 @@
+{
+  "name": "Anand Rathi Wealth UK",
+  "description": "Anand Rathi Wealth UK Limited – FCA Authorised (Ref: 1033886) private wealth management in the City of London. Preserving and growing wealth across generations with data-backed, uncomplicated counsel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
