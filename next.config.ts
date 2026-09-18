@@ -1,7 +1,12 @@
 import type {NextConfig} from 'next';
+import {PHASE_DEVELOPMENT_SERVER} from 'next/constants';
 
-const nextConfig: NextConfig = {
-  output: 'standalone',
+const nextConfig = (phase: string): NextConfig => {
+  const isDev = phase === PHASE_DEVELOPMENT_SERVER;
+
+  return {
+    distDir: isDev ? '.next-dev' : '.next',
+    output: isDev ? undefined : 'standalone',
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
@@ -22,9 +27,6 @@ const nextConfig: NextConfig = {
   },
   transpilePackages: ['motion'],
   devIndicators: false,
-  experimental: {
-    devtoolSegmentExplorer: false,
-  },
   webpack: (config, {dev}) => {
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
     // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
@@ -35,6 +37,7 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
+  };
 };
 
 export default nextConfig;

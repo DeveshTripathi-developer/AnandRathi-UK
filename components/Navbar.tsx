@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Phone, MapPin, Menu, X, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Phone, MapPin, Menu, X, ArrowRight, ShieldCheck, Palette } from 'lucide-react';
 
 interface NavbarProps {
   onOpenConsultation?: () => void;
@@ -98,7 +98,20 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
         </nav>
 
         {/* Right CTA */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
+          <button
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('open-figma-showcase'));
+              }
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded text-xs font-semibold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-400/40 transition-colors shadow-sm cursor-pointer"
+            title="Review 3 Figma Design Concepts for Client Approval"
+          >
+            <Palette className="w-3.5 h-3.5 text-amber-400" />
+            <span>Figma Designs (3)</span>
+          </button>
+
           <a
             href="tel:+442079460192"
             className="hidden xl:flex items-center gap-1.5 text-xs text-slate-300 hover:text-white px-3 py-2 rounded border border-slate-700/80 hover:border-slate-600 transition-colors"
@@ -119,6 +132,17 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
 
         {/* Mobile menu trigger button */}
         <div className="flex md:hidden items-center gap-2">
+          <button
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('open-figma-showcase'));
+              }
+            }}
+            className="px-2.5 py-1.5 rounded text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-400/40 flex items-center gap-1"
+          >
+            <Palette className="w-3 h-3" />
+            <span>Figma (3)</span>
+          </button>
           <button
             id="mobile-consultation-quick-btn"
             onClick={handleOpenConsultation}

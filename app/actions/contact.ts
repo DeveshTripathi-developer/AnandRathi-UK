@@ -2,8 +2,6 @@
 
 import { contactSchema, type ContactActionResponse } from '@/lib/schemas/contact';
 
-export type { ContactActionResponse, ContactFormData } from '@/lib/schemas/contact';
-
 /**
  * Server Action: Process and record confidential HNW consultation requests.
  * Validates inputs against strict FCA compliance and UK GDPR schemas.

@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import Navbar from './Navbar';
+import React, { useState, useEffect } from 'react';
 import WealthCalculator from './calculators/WealthCalculator';
 import LeadIntakeModal from './LeadIntakeModal';
 import LeadIntakeForm from './LeadIntakeForm';
-import { ShieldCheck, ArrowRight } from 'lucide-react';
+import FigmaDesignShowcase, { DesignConceptId } from './FigmaDesignShowcase';
+import { ShieldCheck, Palette, Sparkles } from 'lucide-react';
 import { LiquidAssetTier, PrimaryObjective, InvestmentHorizon } from '@/lib/types';
 
 interface ClientAppWrapperProps {
@@ -14,6 +14,8 @@ interface ClientAppWrapperProps {
 
 export default function ClientAppWrapper({ children }: ClientAppWrapperProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFigmaShowcaseOpen, setIsFigmaShowcaseOpen] = useState(false);
+  const [activeTheme, setActiveTheme] = useState<DesignConceptId>('heritage');
   const [calculatorPreFill, setCalculatorPreFill] = useState<{
     assetTier?: LiquidAssetTier;
     objective?: PrimaryObjective;
@@ -23,11 +25,25 @@ export default function ClientAppWrapper({ children }: ClientAppWrapperProps) {
     mandate?: string;
   } | undefined>(undefined);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleOpenModal = () => setIsModalOpen(true);
+    const handleOpenFigma = () => setIsFigmaShowcaseOpen(true);
+
     window.addEventListener('open-consultation-modal', handleOpenModal);
-    return () => window.removeEventListener('open-consultation-modal', handleOpenModal);
+    window.addEventListener('open-figma-showcase', handleOpenFigma);
+
+    return () => {
+      window.removeEventListener('open-consultation-modal', handleOpenModal);
+      window.removeEventListener('open-figma-showcase', handleOpenFigma);
+    };
   }, []);
+
+  const handleSelectTheme = (theme: DesignConceptId) => {
+    setActiveTheme(theme);
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  };
 
   const handlePreFill = (params: { initial: number; annual: number; horizon: number; mandate: string }) => {
     let tier: LiquidAssetTier = '£1m - £2.5m';
@@ -91,11 +107,43 @@ export default function ClientAppWrapper({ children }: ClientAppWrapperProps) {
         </section>
       </main>
 
+      {/* Floating Client Review Mode Dock (Always accessible for client presentation) */}
+      <aside aria-label="Figma client design review controls" className="fixed bottom-5 right-5 z-40 flex items-center gap-2 shadow-2xl">
+        <button
+          onClick={() => setIsFigmaShowcaseOpen(true)}
+          className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#0A1128]/95 hover:bg-[#070D1E] text-white border border-amber-400/50 shadow-xl backdrop-blur-md transition-all duration-200 hover:scale-105 cursor-pointer"
+        >
+          <div className="w-6 h-6 rounded-full bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-300">
+            <Palette className="w-3.5 h-3.5" />
+          </div>
+          <div className="text-left hidden sm:block">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-amber-400 leading-none">
+              Client Approval Mode
+            </div>
+            <div className="text-xs font-semibold text-slate-100 mt-0.5">
+              3 Figma Design Concepts
+            </div>
+          </div>
+          <div className="sm:hidden text-xs font-semibold text-amber-300">
+            3 Figma Designs
+          </div>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-1"></span>
+        </button>
+      </aside>
+
       {/* Floating Action / Modal Trigger */}
       <LeadIntakeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         preFillData={calculatorPreFill}
+      />
+
+      {/* 3 Figma Design Concepts Showcase & Client Approval Modal */}
+      <FigmaDesignShowcase
+        isOpen={isFigmaShowcaseOpen}
+        onClose={() => setIsFigmaShowcaseOpen(false)}
+        activeTheme={activeTheme}
+        onSelectTheme={handleSelectTheme}
       />
     </>
   );
